@@ -5,3 +5,4 @@ sdkconfig.old
 .vscode
 managed_components
 partitions.csv
+.devcontainer
