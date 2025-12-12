@@ -35,10 +35,10 @@ class MPU9250 {
         bool connective(); // 检测连接是否成功
         bool wake_up(); // 唤醒传感器
 
-        bool read_gyro(Vec3f& data); // 读陀螺仪
-        bool cail_gyro(Vec3f& cailData); // 校准陀螺仪
-        bool read_accel(Vec3f& data); // 读加速度计
-        bool cail_accel(Vec3f& cailBiasData, Vec3f& cailGainData); // 校准加速度计
+        bool read_gyro(Vec3lf& data); // 读陀螺仪
+        bool cail_gyro(Vec3lf& cailData); // 校准陀螺仪
+        bool read_accel(Vec3lf& data); // 读加速度计
+        bool cail_accel(Vec3lf& cailBiasData, Vec3lf& cailGainData); // 校准加速度计
 
     private:
         static constexpr const char* TAG = "MPU9250"; // 日志标签

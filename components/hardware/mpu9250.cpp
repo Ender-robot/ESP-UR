@@ -88,7 +88,7 @@ bool MPU9250::wake_up() {
  * @return true  成功读取
  * @return false 未成功读取
 */
-bool MPU9250::read_gyro(Vec3f& data) {
+bool MPU9250::read_gyro(Vec3lf& data) {
     if (!success) return false;
 
     uint8_t raw_data[6]; // 原始数据
@@ -117,7 +117,7 @@ bool MPU9250::read_gyro(Vec3f& data) {
  * @return true  成功读取
  * @return false 未成功读取
 */
-bool MPU9250::read_accel(Vec3f& data) {
+bool MPU9250::read_accel(Vec3lf& data) {
     if (!success) return false;
 
     uint8_t raw_data[6]; // 原始数据
@@ -143,10 +143,10 @@ bool MPU9250::read_accel(Vec3f& data) {
  * 
  * @param cailData 存储校准数据
 */
-bool MPU9250::cail_gyro(Vec3f& cailData) {
+bool MPU9250::cail_gyro(Vec3lf& cailData) {
     if (!success) return false;
 
-    Vec3f data;
+    Vec3lf data;
     float x_avg, y_avg, z_avg, x_err, y_err, z_err;
     int cnt;
     Rate rate(50);
@@ -194,10 +194,10 @@ bool MPU9250::cail_gyro(Vec3f& cailData) {
  * @param cailBiasData 存储零偏校准数据
  * @param cailGainData 存储增益校准数据
 */
-bool MPU9250::cail_accel(Vec3f& cailBiasData, Vec3f& cailGainData) {
+bool MPU9250::cail_accel(Vec3lf& cailBiasData, Vec3lf& cailGainData) {
     int status = 0; // 记录校准阶段
     int cnt;
-    Vec3f data; // 采样读数暂存
+    Vec3lf data; // 采样读数暂存
     float posSum[3] = {0, 0, 0}; // 正采样值和暂存
     float negSum[3] = {0, 0, 0}; // 负采样值和暂存
     Rate rate(50); // 采样频率控制
@@ -216,7 +216,7 @@ bool MPU9250::cail_accel(Vec3f& cailBiasData, Vec3f& cailGainData) {
         ESP_LOGI(TAG, "pos");
         for (cnt = 0; cnt < SAMPLE; ) { // 采样数记录
             read_accel(data);
-            float dataList[3] = {data.x, data.y, data.z}; // 为了能使用索引把结构体重新存入数组
+            double dataList[3] = {data.x, data.y, data.z}; // 为了能使用索引把结构体重新存入数组
 
             if (fabsf(dataList[status] - GAIN) < TOL) { // 检测摆放是否正确
                 posSum[status] += dataList[status];
@@ -231,7 +231,7 @@ bool MPU9250::cail_accel(Vec3f& cailBiasData, Vec3f& cailGainData) {
         ESP_LOGI(TAG, "neg");
         for (cnt = 0; cnt < SAMPLE; ) { // 采样数记录
             read_accel(data);
-            float dataList[3] = {data.x, data.y, data.z}; // 为了能使用索引把结构体重新存入数组
+            double dataList[3] = {data.x, data.y, data.z}; // 为了能使用索引把结构体重新存入数组
 
             if (fabsf(dataList[status] + GAIN) < TOL) { // 检测摆放是否正确
                 negSum[status] += dataList[status];
