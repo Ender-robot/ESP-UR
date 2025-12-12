@@ -1,11 +1,25 @@
 #ifndef STRUCT_HPP
 #define STRUCT_HPP
 
-struct Vec3f
+struct Vec3i
 {
-    float x = 0.0f;
-    float y = 0.0f;
-    float z = 0.0f;
+    int x = 0;
+    int y = 0;
+    int z = 0;
+};
+
+struct Vec3li
+{
+    int x = 0;
+    int y = 0;
+    int z = 0;
+};
+
+struct Vec3lf
+{
+    double x = 0.0;
+    double y = 0.0;
+    double z = 0.0;
 };
 
 #endif
