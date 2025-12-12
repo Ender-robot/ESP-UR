@@ -5,7 +5,6 @@
 #include "i2c.hpp"
 #include "system.hpp"
 #include "struct.hpp"
-#include "esp_log.h"
 
 /**
  * @brief 九轴IMU ICM20948
@@ -25,12 +24,17 @@ class ICM20948 {
         bool connective();
         bool init(
             uint8_t PWR_MGMT_2_PARAM = 0x00,
-            uint8_t GYRO_CONFIG_1_PARAM = 0x03,
-            uint8_t ACCEL_CONFIG_PARAM = 0x03,
+            uint8_t GYRO_CONFIG_1_PARAM = 0x0B, // 默认陀螺仪+-500°，151.8Hz低通滤波带宽
+            uint8_t GYRO_SMPLRT_DIV_PARAM = 0x00, // 默认陀螺仪不分频
+            uint8_t ACCEL_CONFIG_PARAM = 0x13, // 默认加速度计+-4g，111.4Hz低通滤波带宽
+            uint8_t ACCEL_SMPLRT_DIV_1_PARAM = 0x00, // 默认加速度计不分频
+            uint8_t ACCEL_SMPLRT_DIV_2_PARAM = 0x00, // 默认加速度计不分频
             uint8_t I2C_SLV4_DO_PARAM = 0x08
         );
 
-        bool readGyro(Vec3f& data); // 读陀螺仪
+        bool readGyro(Vec3i& data); // 读陀螺仪
+        bool readAccel(Vec3i& data); // 读加速度计
+        bool readMag(Vec3i& data);   // 读磁力计
 
     private:
         static constexpr const char* TAG = "ICM20948"; // 日志标签
@@ -57,9 +61,14 @@ class ICM20948 {
             USER_CTRL            = 0x03, // 用与控制传感器的主要功能
             INT_PIN_CFG          = 0x0F, // 中断引脚配置
             EXT_SLV_SENS_DATA_00 = 0x3B, // 在配置好 I2C 主机读取操作后，磁力计的数据将被存放在这些寄存器中
+            GYRO_XOUT_H          = 0x33, // 陀螺仪X轴高位地址，到0x38为连续的6位数据位
+            ACCEL_XOUT_H         = 0x2D, // 加速度计X轴高位地址
             // Bank 2
             GYRO_CONFIG_1        = 0x01, // 陀螺仪配置1，用于配置滤波器和量程
+            GYRO_SMPLRT_DIV      = 0x00, // 陀螺仪采样分频设置
             ACCEL_CONFIG         = 0x14, // 加速度计配置1，用于配置滤波器和量程
+            ACCEL_SMPLRT_DIV_1   = 0x10, // 加速度计分频高位
+            ACCEL_SMPLRT_DIV_2   = 0x11, // 加速度计分频低位
             // Bank 3
             I2C_MST_CTRL         = 0x01, // IIC主机控制
             I2C_SLV0_ADDR        = 0x03, // 设置磁力计的 I2C 地址
