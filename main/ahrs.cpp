@@ -1,9 +1,10 @@
 #include "ahrs.hpp"
 
-AHRS::AHRS(const Vec3f gyroBias_, const Vec3f accelBias_, const Vec3f accelGain_) :
+AHRS::AHRS(const Vec3lf gyroBias_, const Vec3lf accelBias_, const Vec3lf accelGain_) :
     gyroBias(gyroBias_), 
     accelBias(accelBias_), 
-    accelGain(accelGain_) {}
+    accelGain(accelGain_) {
+}
 
 AHRS::~AHRS() {
 }
@@ -15,14 +16,14 @@ AHRS::~AHRS() {
  * @param gyroData 陀螺仪数据
  * @param accelData 加速度计数据
  */
-Vec3f AHRS::attiEst(const Vec3f& gyroData, const Vec3f& accelData, float dt, CF) {
+Vec3lf AHRS::attiEst(const Vec3lf& gyroData, const Vec3lf& accelData, float dt, AHRS_MODE::CF) {
     const float T = 0.2; // 越大代表对陀螺仪数据越信任，纠正力度越小。
     const float ALPHA = T / (T + dt);
-    Vec3f accelAtti;
-    Vec3f cailGyro;
-    Vec3f cailAccel;
-    Vec3f gyroPredAtti;
-    Vec3f err;
+    Vec3lf accelAtti;
+    Vec3lf cailGyro;
+    Vec3lf cailAccel;
+    Vec3lf gyroPredAtti;
+    Vec3lf err;
 
     /**
      * 对加速度计进行缩放和零偏校准，对陀螺仪进行零偏校准
@@ -80,3 +81,5 @@ Vec3f AHRS::attiEst(const Vec3f& gyroData, const Vec3f& accelData, float dt, CF)
 
     return lastAtti;
 }
+
+

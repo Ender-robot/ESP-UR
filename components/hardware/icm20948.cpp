@@ -43,8 +43,11 @@ bool ICM20948::connective() {
  * @brief 初始化设置ICM
  * 
  * @param PWR_MGMT_2_PARAM 唤醒陀螺仪和加速度计，默认启用所有轴
- * @param GYRO_CONFIG_1_PARAM 设置陀螺仪，默认失能低通滤波器，+-500°/s量程
- * @param ACCEL_CONFIG_PARAM 设置加速度计，默认失能低通滤波器，+-4g量程
+ * @param GYRO_CONFIG_1_PARAM 设置陀螺仪，默认151.8Hz低通滤波器，+-500°/s量程
+ * @param GYRO_SMPLRT_DIV_PARAM 默认陀螺仪不分频
+ * @param ACCEL_CONFIG_PARAM 设置加速度计，默认111.4Hz低通滤波器，+-4g量程
+ * @param ACCEL_SMPLRT_DIV_1_PARAM 默认加速度计不分频
+ * @param ACCEL_SMPLRT_DIV_2_PARAM 默认加速度计不分频
  * @param I2C_SLV4_DO_PARAM 给从机4的控制命令，默认是磁力计，100Hz连续测量模式
  * 
  * @note 默认参数是比较通用的，想要修改记得查表
@@ -73,7 +76,7 @@ bool ICM20948::init(
     i2c.write_byte_to_mem(ICM20948_ADDR, GYRO_SMPLRT_DIV, GYRO_SMPLRT_DIV_PARAM); // 设置陀螺仪采样率，默认1125Hz
 
     //--- 设置加速度计 ---//
-    i2c.write_byte_to_mem(ICM20948_ADDR, ACCEL_CONFIG, ACCEL_CONFIG_PARAM); // 默认151.8Hz低通滤波器，+-4g
+    i2c.write_byte_to_mem(ICM20948_ADDR, ACCEL_CONFIG, ACCEL_CONFIG_PARAM); // 默认111.4Hz低通滤波器，+-4g
     i2c.write_byte_to_mem(ICM20948_ADDR, ACCEL_SMPLRT_DIV_1, ACCEL_SMPLRT_DIV_1_PARAM); // 加速度计采样率分频高位，默认1125Hz
     i2c.write_byte_to_mem(ICM20948_ADDR, ACCEL_SMPLRT_DIV_2, ACCEL_SMPLRT_DIV_2_PARAM); // 低位
 

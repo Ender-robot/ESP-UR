@@ -3,7 +3,6 @@
 
 #include "uart.hpp"
 #include "uart_data_pack.hpp"
-#include "esp_log.h"
 
 /**
  * @brief 通讯类，负责通过串口发送反馈和通过串口接受指令

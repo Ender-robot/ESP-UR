@@ -16,6 +16,7 @@
 #include "esp_log.h"
 
 #include <cstdio>
+#include <cmath>
 #include <string>
 
 #endif

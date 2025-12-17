@@ -18,7 +18,7 @@ namespace UTILS {
         Vec3i buf; // 暂存数据
 
         ESP_LOGI("GyroCail", "Start !");
-        for (int cnt = 0; cnt < 1000; cnt++) {
+        for (int cnt = 0; cnt < 500; cnt++) {
             if (icm20948.readGyro(buf)) {
                 sum.x += buf.x;
                 sum.y += buf.y;
@@ -32,9 +32,9 @@ namespace UTILS {
             }
         }
 
-        rawGyroBias.x = sum.x / 1000;
-        rawGyroBias.y = sum.y / 1000;
-        rawGyroBias.z = sum.z / 1000;
+        rawGyroBias.x = sum.x / 500;
+        rawGyroBias.y = sum.y / 500;
+        rawGyroBias.z = sum.z / 500;
 
         ESP_LOGI("GyroCail", "Success !\nGyroBias: %d  %d  %d", rawGyroBias.x, rawGyroBias.y, rawGyroBias.z);
 
@@ -62,7 +62,7 @@ namespace UTILS {
         int sign = 1;
         for (int i = 0; i < 6; i++) {
             ESP_LOGI("AccelCali", "Pose: %s", tag[i].c_str());
-            for (int j = 0; j < 1000; j++) {
+            for (int j = 0; j < 500; j++) {
                 if (!icm20948.readAccel(buf)) {
                     ESP_LOGE("AccelCail", "dsiconnection !");
                     return false;
@@ -83,7 +83,7 @@ namespace UTILS {
                 }
                 delay_ms(2);
             }
-            mean[i] = sum / 1000; // 取平均
+            mean[i] = sum / 500; // 取平均
             sign *= -1; // 符号取反
             if (!((i + 1) % 2)) tempIndex++; // 偶数次时轴索引前进一
             sum = 0; // 和归零
